@@ -1,10 +1,12 @@
-import { ChildEntity, Column, ManyToOne, OneToMany } from 'typeorm';
+import { PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import { IsEnum } from 'class-validator';
+import { Country } from './Country';
+import { Competition } from './Competition';
 
 export enum UserRole {
-    BASIC = 'basic',
-    AGENT = 'agent',
-    ADMIN = 'administrator'
+    ORGANIZER = 'organizer',
+    DELEGATE = 'delegate',
+    DELEGATE_LEAD = 'delegate_lead'
 }
 
 export enum UserStatus {
@@ -13,13 +15,19 @@ export enum UserStatus {
 }
 
 export class User {
+    @PrimaryGeneratedColumn()
+    public id!: number;
+
+    @Column()
+    public username!: string;
+
     @Column()
     public password?: string;
 
-    @Column({ nullable: true })
+    @Column()
     public firstName!: string;
 
-    @Column({ nullable: true })
+    @Column()
     public lastName!: string;
 
     @Column()
@@ -30,6 +38,9 @@ export class User {
     @IsEnum(UserStatus)
     public status!: UserStatus;
 
-    @Column()
-    public profilePicture!: string;
+    @ManyToOne(() => Country, country => country.users)
+    public country!: Country;
+
+    @OneToMany(() => Competition, competition => competition.delegate)
+    public competitions!: Competition;
 }

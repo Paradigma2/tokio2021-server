@@ -1,8 +1,6 @@
 import multer from 'multer';
 import { Router } from 'express';
 import { authenticate, createUser, updateUser } from '../controllers/users.controller';
-import { createRealty, indexRealties, updateRealty, createPhoto, indexPhotos, getPhoto } from '../controllers/realties.controller';
-import { createOffer, indexOffers, updateOffer, acceptOffer } from '../controllers/offers.controller';
 
 const router = Router();
 const storage = multer.diskStorage({
